@@ -4,10 +4,10 @@ from urllib.parse import urlencode
 import itertools
 
 
-TOKEN = '73eaea320bdc0d3299faa475c196cfea1c4df9da4c6d291633f9fe8f83c08c4de2a3abf89fbc3ed8a44e1'
+TOKEN = '73eaea320bdc0d3299faa475c196cfea1c4df9da4c6d291633f9fe8f83c08c4de2a3abf89fbc3ed8a44e1' # Токен Евгения
 params = {
     'user_id': 10799607, # При введении любого id код работает
-    'access_token': TOKEN,
+    'access_token': TOKEN, # Или я не допонимаю, либо токен универсальный.
     'v': 5.92
 }
 
