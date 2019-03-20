@@ -73,7 +73,7 @@ for friend in friends_id:
         friend_groups = requests.get('https://api.vk.com/method/groups.get', params)
         friend_group_list.append(friend_groups.json()['response']['items'])
         print('.')
-        time.sleep(1,5)
+        time.sleep(1)
     except Exception as e:
         print(friend_groups.json())
 general_groups_friend = list(itertools.chain.from_iterable(friend_group_list))
