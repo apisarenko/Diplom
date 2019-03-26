@@ -142,5 +142,4 @@ def main():
     with open('groups.json', 'w', encoding='utf-8') as json_file:
         json.dump(output_list, json_file, ensure_ascii=False)
 
-
 main()
