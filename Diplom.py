@@ -72,22 +72,23 @@ def group_list_user(person_id):
 
 def list_groups_friend(friends):
     list_friends_user = friends
-    friend_group_list_1 = []
-    friend_group_list_2 = []
-    for friend in list_friends_user:
-        params['user_id'] = friend
+    friend_group_list = []
+    x = 0
+    while x < len(list_friends_user):
+        params['user_id'] = list_friends_user[x]
+        count = 0
+        x += 1
         try:
             friend_groups = requests.get('https://api.vk.com/method/groups.get', params)
-            friend_group_list_1.append(friend_groups.json()['response']['items'])
+            friend_group_list.append(friend_groups.json()['response']['items'])
             print('.')
+            count += 1
         except Exception as e:
-            time.sleep(0.36)
             if friend_groups.json()['error']['error_code'] == 6:
-                friend_groups_2 = requests.get('https://api.vk.com/method/groups.get', params)
-                friend_group_list_2.append(friend_groups_2.json()['response']['items'])
+                time.sleep(0.33)
             else:
                 print(friend_groups.json())
-    friend_group_list = friend_group_list_1 + friend_group_list_2
+                count += 1
     return friend_group_list
 
 def unique_groups(group_list, group_user):
@@ -100,30 +101,27 @@ def unique_groups(group_list, group_user):
 
 def json_output(unique_groups):
     list_of_unique_groups = unique_groups
-    output_list_1 = []
-    output_list_2 = []
-    for individual_user_groups in list_of_unique_groups:
+    output_list = []
+    x = 0
+    while x < len(list_of_unique_groups):
         params_out = {
-            'group_id': individual_user_groups,
+            'group_id': list_of_unique_groups[x],
             'fields': 'members_count'
         }
         params.update(params_out)
+        count = 0
+        x += 1
         try:
-            out_list_of_unique_groups_1 = requests.get('https://api.vk.com/method/groups.getById', params)
-            finish_list = out_list_of_unique_groups_1.json()['response'][0]
-            output_finish_group_1 = {'name': finish_list['name'],
+            out_list = requests.get('https://api.vk.com/method/groups.getById', params)
+            finish_list = out_list.json()['response'][0]
+            output_finish_group = {'name': finish_list['name'],
                                      'gid': finish_list['id'],
                                      'members_count': finish_list['members_count']}
-            output_list_1.append(output_finish_group_1)
-        except KeyError:
-            time.sleep(0.34)
-            out_list_of_unique_groups_2 = requests.get('https://api.vk.com/method/groups.getById', params)
-            finish_list = out_list_of_unique_groups_2.json()['response'][0]
-            output_finish_group_2 = {'name': finish_list['name'],
-                                     'gid': finish_list['id'],
-                                     'members_count': finish_list['members_count']}
-            output_list_2.append(output_finish_group_2)
-    output_list = output_list_1 + output_list_2
+            output_list.append(output_finish_group)
+            count += 1
+        except Exception as e:
+            if out_list.json()['error']['error_code'] == 6:
+                time.sleep(0.33)
     return output_list
 
 def main():
