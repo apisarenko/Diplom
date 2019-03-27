@@ -1,5 +1,4 @@
 import requests
-from urllib.parse import urlencode
 import itertools
 import json
 import time
@@ -76,19 +75,17 @@ def list_groups_friend(friends):
     x = 0
     while x < len(list_friends_user):
         params['user_id'] = list_friends_user[x]
-        count = 0
-        x += 1
         try:
             friend_groups = requests.get('https://api.vk.com/method/groups.get', params)
             friend_group_list.append(friend_groups.json()['response']['items'])
             print('.')
-            count += 1
+            x += 1
         except Exception as e:
             if friend_groups.json()['error']['error_code'] == 6:
                 time.sleep(0.33)
             else:
                 print(friend_groups.json())
-                count += 1
+                x += 1
     return friend_group_list
 
 def unique_groups(group_list, group_user):
@@ -109,8 +106,6 @@ def json_output(unique_groups):
             'fields': 'members_count'
         }
         params.update(params_out)
-        count = 0
-        x += 1
         try:
             out_list = requests.get('https://api.vk.com/method/groups.getById', params)
             finish_list = out_list.json()['response'][0]
@@ -118,7 +113,7 @@ def json_output(unique_groups):
                                      'gid': finish_list['id'],
                                      'members_count': finish_list['members_count']}
             output_list.append(output_finish_group)
-            count += 1
+            x += 1
         except Exception as e:
             if out_list.json()['error']['error_code'] == 6:
                 time.sleep(0.33)
